@@ -100,7 +100,49 @@ ACF.SoundToolSupport =
 			setSound( ent, soundData )
 		end
 	},
+	
+	acf_gun = 
+	{
+		GetSound = function(ent) return {Sound = ent.Sound} end,
+		
+		SetSound = function(ent, soundData) 
+			ent.Sound = soundData.Sound
+			ent:SetNWString( "Sound", soundData.Sound )
+		end,
+		
+		ResetSound = function(ent)
+			local Class = ent.Class
+			local Classes = list.Get("ACFClasses")
+			
+			local soundData = {Sound = Classes["GunClass"][Class]["sound"]}
+			
+			local setSound = ACF.SoundToolSupport["acf_gun"].SetSound
+			setSound( ent, soundData )
+		end
+	},
+	
+	acf_engine = 
+	{
+		GetSound = function(ent) return {Sound = ent.SoundPath, Pitch = ent.SoundPitch} end,
+		
+		SetSound = function(ent, soundData) 
+			ent.SoundPath = soundData.Sound
+			ent.SoundPitch = soundData.Pitch
+		end,
+		
+		ResetSound = function(ent)
+			local Id = ent.Id
+			local List = list.Get("ACFEnts")
+			local pitch = List["Mobility"][Id]["pitch"] or 1
+			
+			local soundData = {Sound = List["Mobility"][Id]["sound"], Pitch = pitch}
+			
+			local setSound = ACF.SoundToolSupport["acf_engine"].SetSound
+			setSound( ent, soundData )
+		end
+	},
 }
+
 
 
 
